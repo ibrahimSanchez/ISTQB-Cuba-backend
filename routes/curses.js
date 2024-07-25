@@ -3,13 +3,13 @@ const { Router } = require('express');
 
 const { validateFields } = require('../middlewares/index');
 
-const { existEmail, existUser, isRoleValid } = require('../helpers/index');
+const { existCurse } = require('../helpers/index');
 
 const {
-    usersGet,
-    usersPut,
-    usersPost,
-    usersDelete
+  cursesGet,
+  cursesPost,
+  cursesPut,
+  cursesDelete
 } = require('../controllers/index');
 
 
@@ -19,7 +19,7 @@ const router =   Router();
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    get   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
-router.get('/', usersGet);
+router.get('/', cursesGet);
 
 
 // todo--------------------------------------------------------------------------------------
@@ -27,22 +27,19 @@ router.get('/', usersGet);
 // todo--------------------------------------------------------------------------------------
 router.post('/', [
     check('name', 'El campo "name" es requerido').not().isEmpty(),
-    check('password', 'El campo "password" debe tener como minimo 8 caaracteres').isLength({ min: 8 }),
-    check('email', 'El campo "email" no es valido').isEmail(),
-    check('email').custom(existEmail),
-    check('role').custom(isRoleValid),
+    check('description', 'El campo "description" es requerido').not().isEmpty(),
+    check('category', 'El campo "category" es requerido').not().isEmpty(),
     validateFields
-], usersPost);
+], cursesPost);
 
 
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    put   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
 router.put('/:id', [
-    check('id').custom(existUser),
-    // check('role').custom(isRoleValid),
+    check('id').custom(existCurse),
     validateFields
-], usersPut);
+], cursesPut);
 
 
 // todo--------------------------------------------------------------------------------------
@@ -52,9 +49,9 @@ router.delete('/:id', [
     // validateJWT,
     // isAdminRole,
     // hasRole('ADMIN_ROLE'),
-    check('id').custom(existUser),
+    check('id').custom(existCurse),
     validateFields
-], usersDelete);
+], cursesDelete);
 
 
 
@@ -62,4 +59,4 @@ module.exports = router;
 
 
 
-// http://localhost:8080/api/users
+// http://localhost:8080/api/curses

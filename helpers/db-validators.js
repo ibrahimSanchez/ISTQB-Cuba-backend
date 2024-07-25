@@ -1,5 +1,7 @@
 const { User } = require("../models/user");
+const { Curse } = require("../models/curse");
 const { Role } = require("../models/role");
+const { Reservation } = require("../models/reservation");
 
 
 // todo--------------------------------------------------------------------------------------
@@ -35,10 +37,32 @@ const existUser = async (id = '') => {
 }
 
 
+// todo--------------------------------------------------------------------------------------
+// todo------------------------------    exist curse   ---------------------------------------
+// todo--------------------------------------------------------------------------------------
+const existCurse = async (id = '') => {
+    const curse = await Curse.findByPk(id);
+    if (!curse)
+        throw new Error(`No existe el curso con id ${id}`);
+}
+
+
+// todo--------------------------------------------------------------------------------------
+// todo------------------------------    exist reservation   ---------------------------------------
+// todo--------------------------------------------------------------------------------------
+const existReservation = async (id = '') => {
+    const reservation = await Reservation.findByPk(id);
+    if (!reservation)
+        throw new Error(`No existe la reservacion con id ${id}`);
+}
+
+
 
 
 module.exports = {
     isRoleValid,
     existEmail,
-    existUser
+    existUser,
+    existCurse,
+    existReservation
 }

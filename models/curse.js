@@ -2,7 +2,7 @@ const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = new Sequelize(`${process.env.CONNECTION_DB}`);
 
 
-const User = sequelize.define("user", {
+const Curse = sequelize.define("curse", {
 
     id: {
         type: DataTypes.INTEGER,
@@ -11,50 +11,40 @@ const User = sequelize.define("user", {
     },
 
     name: {
-        type: DataTypes.STRING(100),
+        type: DataTypes.STRING(200),
         allowNull: false
     },
- 
-    email: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        unique: true,
-        validate: {
-            isEmail: true
-        }
-    },
-    password: {
-        type: DataTypes.STRING(100),
-        allowNull: false,
-        // validate: {
-        //     len: [8, 16]
-        // }
+
+    description: {
+        type: DataTypes.STRING(500),
+        allowNull: false
     },
 
-    role: {
+    category: {
         type: DataTypes.STRING(100),
-        allowNull: false,
-        validate: {
-            isIn: [['ADMIN_ROLE', 'USER_ROLE']]
-        }
+        allowNull: false
     },
 
     state: {
         type: DataTypes.BOOLEAN,
         defaultValue: true
+    },
+
+    prise: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
     }
 });
 
 // Crear la tabla
 // (async () => {
-//     await User.sync({force: true});
+//     await Curse.sync({force: true});
 // })();
 
 
-User.prototype.toJSON = function () {
+Curse.prototype.toJSON = function () {
     const values = { ...this.get() };
     const id = values.id;
-    delete values.password;
     delete values.updatedAt;
     delete values.createdAt;
     delete values.state;
@@ -65,4 +55,5 @@ User.prototype.toJSON = function () {
 
 
 
-module.exports = { User }; 
+
+module.exports = { Curse };

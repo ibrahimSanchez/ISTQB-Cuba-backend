@@ -1,15 +1,15 @@
 const { check } = require('express-validator');
 const { Router } = require('express');
 
-const { validateFields } = require('../middlewares/index');
+const { validateFields, isAdminRole, validateJWT } = require('../middlewares/index');
 
-const { existEmail, existUser, isRoleValid } = require('../helpers/index');
+const { existCurse, existUser, existReservation } = require('../helpers/index');
 
 const {
-    usersGet,
-    usersPut,
-    usersPost,
-    usersDelete
+    reservationsGet,
+    reservationsPost,
+    reservationsPut,
+    reservationsDelete
 } = require('../controllers/index');
 
 
@@ -19,30 +19,35 @@ const router =   Router();
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    get   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
-router.get('/', usersGet);
+router.get('/',[
+    // isAdminRole,
+    validateJWT,
+    validateFields
+], reservationsGet);
 
 
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    post   ---------------------------------------------
 // todo--------------------------------------------------------------------------------------
 router.post('/', [
-    check('name', 'El campo "name" es requerido').not().isEmpty(),
-    check('password', 'El campo "password" debe tener como minimo 8 caaracteres').isLength({ min: 8 }),
-    check('email', 'El campo "email" no es valido').isEmail(),
-    check('email').custom(existEmail),
-    check('role').custom(isRoleValid),
+    validateJWT,
+    check('userId', 'El campo "userId" es requerido').not().isEmpty(),
+    check('curseId', 'El campo "curserId" es requerido').not().isEmpty(),
+    check('userId').custom(existUser),
+    check('curseId').custom(existCurse),
     validateFields
-], usersPost);
+], reservationsPost);
 
 
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    put   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
 router.put('/:id', [
-    check('id').custom(existUser),
-    // check('role').custom(isRoleValid),
+    isAdminRole,
+    check('id').custom(existReservation),
+    check('aprobada', 'El campo "aprobada" es requerido').not().isEmpty(),
     validateFields
-], usersPut);
+], reservationsPut);
 
 
 // todo--------------------------------------------------------------------------------------
@@ -52,9 +57,9 @@ router.delete('/:id', [
     // validateJWT,
     // isAdminRole,
     // hasRole('ADMIN_ROLE'),
-    check('id').custom(existUser),
+    check('id').custom(existReservation),
     validateFields
-], usersDelete);
+], reservationsDelete);
 
 
 
@@ -62,4 +67,4 @@ module.exports = router;
 
 
 
-// http://localhost:8080/api/users
+// http://localhost:8080/api/reservations

@@ -26,9 +26,7 @@ const User = sequelize.define("user", {
     password: {
         type: DataTypes.STRING(100),
         allowNull: false,
-        // validate: {
-        //     len: [8, 16]
-        // }
+      
     },
 
     role: {
@@ -45,11 +43,11 @@ const User = sequelize.define("user", {
     }
 });
 
+
 // Crear la tabla
 // (async () => {
 //     await User.sync({force: true});
 // })();
-
 
 User.prototype.toJSON = function () {
     const values = { ...this.get() };
@@ -62,7 +60,5 @@ User.prototype.toJSON = function () {
     values.uid = id;
     return values;
 };
-
-
 
 module.exports = { User }; 

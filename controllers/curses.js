@@ -31,6 +31,29 @@ const cursesGet = async (req = request, res = response) => {
 }
 
 
+
+// todo--------------------------------------------------------------------------------------
+// todo-------------------------------    get by id   ---------------------------------------
+// todo--------------------------------------------------------------------------------------
+const getCurseById = async (req, res) => {
+
+    const { id } = req.params;
+
+    try {
+        const curse = await Curse.findByPk(id)
+
+        res.json({
+            curse
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+            msg: 'No se pudo optener el curso'
+        });
+    }
+}
+
+
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    post   ---------------------------------------------
 // todo--------------------------------------------------------------------------------------
@@ -110,6 +133,7 @@ const cursesDelete = async (req = request, res = response) => {
 
 module.exports = {
     cursesGet,
+    getCurseById,
     cursesPost,
     cursesPut,
     cursesDelete

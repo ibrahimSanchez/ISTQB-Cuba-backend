@@ -6,20 +6,30 @@ const { validateFields } = require('../middlewares/index');
 const { existCurse } = require('../helpers/index');
 
 const {
-  cursesGet,
-  cursesPost,
-  cursesPut,
-  cursesDelete
+    cursesGet,
+    cursesPost,
+    cursesPut,
+    cursesDelete,
+    getCurseById
 } = require('../controllers/index');
 
 
 
-const router =   Router();
+const router = Router();
 
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    get   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
 router.get('/', cursesGet);
+
+
+// todo--------------------------------------------------------------------------------------
+// todo------------------------------    get by id   ----------------------------------------------
+// todo--------------------------------------------------------------------------------------
+router.get('/:id', [
+    check('id').custom(existCurse),
+    validateFields
+], getCurseById);
 
 
 // todo--------------------------------------------------------------------------------------

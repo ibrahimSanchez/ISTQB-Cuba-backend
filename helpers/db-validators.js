@@ -1,5 +1,5 @@
 const { User } = require("../models/user");
-const { Curse } = require("../models/curse");
+const { Certification } = require("../models/certification");
 const { Role } = require("../models/role");
 const { Reservation } = require("../models/reservation");
 
@@ -38,12 +38,12 @@ const existUser = async (id = '') => {
 
 
 // todo--------------------------------------------------------------------------------------
-// todo------------------------------    exist curse   ---------------------------------------
+// todo------------------------------    exist certification   ---------------------------------------
 // todo--------------------------------------------------------------------------------------
-const existCurse = async (id = '') => {
-    const curse = await Curse.findByPk(id);
-    if (!curse)
-        throw new Error(`No existe el curso con id ${id}`);
+const existCertification = async (id = '') => {
+    const certification = await Certification.findByPk(id);
+    if (!certification)
+        throw new Error(`No existe la certificación con id ${id}`);
 }
 
 
@@ -63,6 +63,6 @@ module.exports = {
     isRoleValid,
     existEmail,
     existUser,
-    existCurse,
+    existCertification,
     existReservation
 }

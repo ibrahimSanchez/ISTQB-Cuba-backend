@@ -2,7 +2,7 @@ const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = new Sequelize(`${process.env.CONNECTION_DB}`);
 
 
-const Curse = sequelize.define("curse", {
+const Certification = sequelize.define("certification", {
 
     id: {
         type: DataTypes.INTEGER,
@@ -38,11 +38,11 @@ const Curse = sequelize.define("curse", {
 
 // Crear la tabla
 // (async () => {
-//     await Curse.sync({force: true});
+//     await Certification.sync({force: true});
 // })();
 
 
-Curse.prototype.toJSON = function () {
+Certification.prototype.toJSON = function () {
     const values = { ...this.get() };
     const id = values.id;
     delete values.updatedAt;
@@ -56,4 +56,4 @@ Curse.prototype.toJSON = function () {
 
 
 
-module.exports = { Curse };
+module.exports = { Certification };

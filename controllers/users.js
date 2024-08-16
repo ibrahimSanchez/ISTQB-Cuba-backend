@@ -33,6 +33,28 @@ const usersGet = async (req = request, res = response) => {
 
 
 // todo--------------------------------------------------------------------------------------
+// todo-------------------------------    get by id   ---------------------------------------
+// todo--------------------------------------------------------------------------------------
+const getUserById = async (req, res) => {
+
+    const { id } = req.params;
+
+    try {
+        const user = await User.findByPk(id)
+
+        res.json({
+            user
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(400).json({
+            msg: 'No se pudo optener el usuario'
+        });
+    }
+}
+
+
+// todo--------------------------------------------------------------------------------------
 // todo------------------------------    post   ---------------------------------------------
 // todo--------------------------------------------------------------------------------------
 const usersPost = async (req = request, res = response) => {
@@ -95,7 +117,7 @@ const usersDelete = async (req = request, res = response) => {
     const { user: userAuth } = req;
 
     try {
-      
+
         const user = await User.findByPk(id);
         if (user.state) {
             user.state = false;
@@ -119,6 +141,7 @@ const usersDelete = async (req = request, res = response) => {
 
 module.exports = {
     usersGet,
+    getUserById,
     usersPost,
     usersPut,
     usersDelete

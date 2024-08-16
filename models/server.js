@@ -5,12 +5,12 @@ const { dbConnection } = require('../database/config');
 
 class Server {
     constructor() {
-        this.app =  express();
+        this.app = express();
         this.port = process.env.PORT;
 
         this.paths = {
             auth: '/api/auth',
-            curses: '/api/curses',
+            certifications: '/api/certifications',
             users: '/api/users',
             reservations: '/api/reservations',
         }
@@ -47,7 +47,7 @@ class Server {
 
     routes() {
         this.app.use(this.paths.auth, require('../routes/auth'));
-        this.app.use(this.paths.curses, require('../routes/curses'));
+        this.app.use(this.paths.certifications, require('../routes/certifications'));
         this.app.use(this.paths.users, require('../routes/users'));
         this.app.use(this.paths.reservations, require('../routes/reservations'));
     }

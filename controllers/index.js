@@ -1,5 +1,5 @@
 const userController = require('./users');
-const curseController = require('./curses');
+const certificationController = require('./certifications');
 const reservationController = require('./reservations');
 
 
@@ -7,6 +7,6 @@ const reservationController = require('./reservations');
 
 module.exports = {
     ...userController,
-    ...curseController,
+    ...certificationController,
     ...reservationController
 }

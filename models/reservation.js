@@ -1,6 +1,6 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const { User } = require("./user");
-const { Curse } = require("./curse");
+const { Certification } = require("./certification");
 const sequelize = new Sequelize(`${process.env.CONNECTION_DB}`);
 
 
@@ -27,7 +27,7 @@ const Reservation = sequelize.define("reservation", {
 // Relacion con otras tablas
 Reservation.belongsTo(User, { foreignKey: 'userId' });
 
-Reservation.belongsTo(Curse, { foreignKey: 'curseId' });
+Reservation.belongsTo(Certification, { foreignKey: 'certificationId' });
 
 // Crear la tabla
 // (async () => {

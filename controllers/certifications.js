@@ -1,19 +1,19 @@
 const { response, request } = require('express');
-const { Curse } = require('../models/curse');
+const { Certification } = require('../models/certification');
 
 
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    get   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
-const cursesGet = async (req = request, res = response) => {
+const certificationsGet = async (req = request, res = response) => {
 
     const { limit = 10, start = 0 } = req.query;
     const q = { where: { state: true } };
 
     try {
-        const [total, curses] = await Promise.all([
-            Curse.count(q),
-            Curse.findAll({
+        const [total, certifications] = await Promise.all([
+            Certification.count(q),
+            Certification.findAll({
                 limit: Number(limit) ? Number(limit) : 10,
                 offset: Number(start) ? Number(start) : 0,
                 order: ['id'],
@@ -23,7 +23,7 @@ const cursesGet = async (req = request, res = response) => {
 
         res.json({
             total,
-            curses
+            certifications
         });
     } catch (error) {
         console.log('error en el get', error)
@@ -35,20 +35,20 @@ const cursesGet = async (req = request, res = response) => {
 // todo--------------------------------------------------------------------------------------
 // todo-------------------------------    get by id   ---------------------------------------
 // todo--------------------------------------------------------------------------------------
-const getCurseById = async (req, res) => {
+const getCertificationById = async (req, res) => {
 
     const { id } = req.params;
 
     try {
-        const curse = await Curse.findByPk(id)
+        const certifications = await Certification.findByPk(id)
 
         res.json({
-            curse
+            certifications
         });
     } catch (error) {
         console.log(error);
         res.status(400).json({
-            msg: 'No se pudo optener el curso'
+            msg: 'No se pudo optener la certificación'
         });
     }
 }
@@ -57,16 +57,16 @@ const getCurseById = async (req, res) => {
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    post   ---------------------------------------------
 // todo--------------------------------------------------------------------------------------
-const cursesPost = async (req = request, res = response) => {
+const certificationsPost = async (req = request, res = response) => {
 
     const { name, description, category, prise } = req.body;
-    const curse = new Curse({ name, description, category, prise });
+    const certifications = new Certification({ name, description, category, prise });
 
     try {
-        await curse.save();
+        await certifications.save();
         res.json({
-            msg: 'Curso creado correctamente',
-            curse
+            msg: 'Certificación creada correctamente',
+            certifications
         })
     } catch (error) {
         console.log('error en el post', error)
@@ -77,19 +77,19 @@ const cursesPost = async (req = request, res = response) => {
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    put   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
-const cursesPut = async (req = request, res = response) => {
+const certificationsPut = async (req = request, res = response) => {
 
     const { id } = req.params;
     const { id: i, ...rest } = req.body;
 
     try {
-        const curse = await Curse.findByPk(id);
-        Object.assign(curse, rest);
-        await curse.save();
+        const certifications = await Certification.findByPk(id);
+        Object.assign(certifications, rest);
+        await certifications.save();
 
         res.json({
-            msg: 'Curso modificado correctamete',
-            curse
+            msg: 'Certificación modificada correctamete',
+            certifications
         });
 
     } catch (error) {
@@ -102,7 +102,7 @@ const cursesPut = async (req = request, res = response) => {
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    delete   -------------------------------------------
 // todo--------------------------------------------------------------------------------------
-const cursesDelete = async (req = request, res = response) => {
+const certificationsDelete = async (req = request, res = response) => {
 
     const { id } = req.params;
 
@@ -110,19 +110,19 @@ const cursesDelete = async (req = request, res = response) => {
 
     try {
 
-        const curse = await Curse.findByPk(id);
-        if (curse.state) {
-            curse.state = false;
-            await curse.save();
+        const certifications = await Certification.findByPk(id);
+        if (certifications.state) {
+            certifications.state = false;
+            await certifications.save();
 
             res.json({
-                msg: 'Curso eliminado correctamente',
-                curse,
+                msg: 'Certificación eliminada correctamente',
+                certifications,
                 userAuth
             });
         } else
             res.status(404).json({
-                msg: 'El curso no esta almacenado en la BD'
+                msg: 'El certificación no esta almacenada en la BD'
             });
 
     } catch (error) {
@@ -132,9 +132,9 @@ const cursesDelete = async (req = request, res = response) => {
 
 
 module.exports = {
-    cursesGet,
-    getCurseById,
-    cursesPost,
-    cursesPut,
-    cursesDelete
+    certificationsGet,
+    getCertificationById,
+    certificationsPost,
+    certificationsPut,
+    certificationsDelete
 };

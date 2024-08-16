@@ -3,14 +3,14 @@ const { Router } = require('express');
 
 const { validateFields } = require('../middlewares/index');
 
-const { existCurse } = require('../helpers/index');
+const { existCertification } = require('../helpers/index');
 
 const {
-    cursesGet,
-    cursesPost,
-    cursesPut,
-    cursesDelete,
-    getCurseById
+    certificationsGet,
+    certificationsPost,
+    certificationsPut,
+    certificationsDelete,
+    getCertificationById
 } = require('../controllers/index');
 
 
@@ -20,16 +20,16 @@ const router = Router();
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    get   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
-router.get('/', cursesGet);
+router.get('/', certificationsGet);
 
 
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    get by id   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
 router.get('/:id', [
-    check('id').custom(existCurse),
+    check('id').custom(existCertification),
     validateFields
-], getCurseById);
+], getCertificationById);
 
 
 // todo--------------------------------------------------------------------------------------
@@ -40,16 +40,16 @@ router.post('/', [
     check('description', 'El campo "description" es requerido').not().isEmpty(),
     check('category', 'El campo "category" es requerido').not().isEmpty(),
     validateFields
-], cursesPost);
+], certificationsPost);
 
 
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    put   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
 router.put('/:id', [
-    check('id').custom(existCurse),
+    check('id').custom(existCertification),
     validateFields
-], cursesPut);
+], certificationsPut);
 
 
 // todo--------------------------------------------------------------------------------------
@@ -59,9 +59,9 @@ router.delete('/:id', [
     // validateJWT,
     // isAdminRole,
     // hasRole('ADMIN_ROLE'),
-    check('id').custom(existCurse),
+    check('id').custom(existCertification),
     validateFields
-], cursesDelete);
+], certificationsDelete);
 
 
 
@@ -69,4 +69,4 @@ module.exports = router;
 
 
 
-// http://localhost:8080/api/curses
+// http://localhost:8080/api/certifications

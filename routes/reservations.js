@@ -3,7 +3,7 @@ const { Router } = require('express');
 
 const { validateFields, isAdminRole, validateJWT } = require('../middlewares/index');
 
-const { existCurse, existUser, existReservation } = require('../helpers/index');
+const { existCertification, existUser, existReservation } = require('../helpers/index');
 
 const {
     reservationsGet,
@@ -34,7 +34,7 @@ router.post('/', [
     check('userId', 'El campo "userId" es requerido').not().isEmpty(),
     check('curseId', 'El campo "curserId" es requerido').not().isEmpty(),
     check('userId').custom(existUser),
-    check('curseId').custom(existCurse),
+    check('curseId').custom(existCertification),
     validateFields
 ], reservationsPost);
 

@@ -20,8 +20,8 @@ const router =   Router();
 // todo------------------------------    get   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
 router.get('/',[
-    // isAdminRole,
     validateJWT,
+    isAdminRole,
     validateFields
 ], reservationsGet);
 
@@ -32,9 +32,9 @@ router.get('/',[
 router.post('/', [
     validateJWT,
     check('userId', 'El campo "userId" es requerido').not().isEmpty(),
-    check('curseId', 'El campo "curserId" es requerido').not().isEmpty(),
+    check('certificationId', 'El campo "certificationId" es requerido').not().isEmpty(),
     check('userId').custom(existUser),
-    check('curseId').custom(existCertification),
+    check('certificationId').custom(existCertification),
     validateFields
 ], reservationsPost);
 
@@ -43,9 +43,10 @@ router.post('/', [
 // todo------------------------------    put   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
 router.put('/:id', [
+    validateJWT,
     isAdminRole,
     check('id').custom(existReservation),
-    check('aprobada', 'El campo "aprobada" es requerido').not().isEmpty(),
+    check('approved', 'El campo "aprobada" es requerido').not().isEmpty(),
     validateFields
 ], reservationsPut);
 
@@ -54,7 +55,7 @@ router.put('/:id', [
 // todo------------------------------    delete   -------------------------------------------
 // todo--------------------------------------------------------------------------------------
 router.delete('/:id', [
-    // validateJWT,
+    validateJWT,
     // isAdminRole,
     // hasRole('ADMIN_ROLE'),
     check('id').custom(existReservation),

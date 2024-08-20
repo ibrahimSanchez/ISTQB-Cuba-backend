@@ -21,9 +21,10 @@ const reservationsGet = async (req = request, res = response) => {
             })
         ]);
 
+
         res.json({
             total,
-            reservations
+            reservations,
         });
     } catch (error) {
         console.log('error en el get', error)
@@ -36,8 +37,8 @@ const reservationsGet = async (req = request, res = response) => {
 // todo--------------------------------------------------------------------------------------
 const reservationsPost = async (req = request, res = response) => {
 
-    const { userId, curseId, aprobada } = req.body;
-    const reservation = new Reservation({ userId, curseId, aprobada });
+    const { userId, certificationId, approved } = req.body;
+    const reservation = new Reservation({ userId, certificationId, approved });
 
     try {
         await reservation.save();

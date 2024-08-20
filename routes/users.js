@@ -1,7 +1,7 @@
 const { check } = require('express-validator');
 const { Router } = require('express');
 
-const { validateFields } = require('../middlewares/index');
+const { validateFields, validateJWT, isAdminRole, hasRole } = require('../middlewares/index');
 
 const { existEmail, existUser, isRoleValid } = require('../helpers/index');
 
@@ -15,7 +15,7 @@ const {
 
 
 
-const router =   Router();
+const router = Router();
 
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    get   ----------------------------------------------
@@ -50,6 +50,9 @@ router.post('/', [
 // todo------------------------------    put   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
 router.put('/:id', [
+    validateJWT,
+    isAdminRole,
+    hasRole('ADMIN_ROLE'),
     check('id').custom(existUser),
     // check('role').custom(isRoleValid),
     validateFields
@@ -60,9 +63,9 @@ router.put('/:id', [
 // todo------------------------------    delete   -------------------------------------------
 // todo--------------------------------------------------------------------------------------
 router.delete('/:id', [
-    // validateJWT,
-    // isAdminRole,
-    // hasRole('ADMIN_ROLE'),
+    validateJWT,
+    isAdminRole,
+    hasRole('ADMIN_ROLE'),
     check('id').custom(existUser),
     validateFields
 ], usersDelete);

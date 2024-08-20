@@ -56,7 +56,7 @@ User.prototype.toJSON = function () {
     delete values.updatedAt;
     delete values.createdAt;
     delete values.state;
-    delete values.id;
+    // delete values.id;
     values.uid = id;
     return values;
 };

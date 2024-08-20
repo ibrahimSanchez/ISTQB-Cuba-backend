@@ -17,7 +17,7 @@ const Reservation = sequelize.define("reservation", {
         defaultValue: true
     },
 
-    aprobada: {
+    approved: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
     }

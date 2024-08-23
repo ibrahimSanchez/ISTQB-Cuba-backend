@@ -13,6 +13,8 @@ class Server {
             certifications: '/api/certifications',
             users: '/api/users',
             reservations: '/api/reservations',
+            roles: '/api/roles',
+            jobApplications: '/api/jobApplications'
         }
 
         this.connectDB();
@@ -50,6 +52,8 @@ class Server {
         this.app.use(this.paths.certifications, require('../routes/certifications'));
         this.app.use(this.paths.users, require('../routes/users'));
         this.app.use(this.paths.reservations, require('../routes/reservations'));
+        this.app.use(this.paths.roles, require('../routes/roles'));
+        this.app.use(this.paths.jobApplications, require('../routes/jobApplications'));
     }
 
 

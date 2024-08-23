@@ -3,7 +3,6 @@
 
 const isAdminRole = async (req, res, next) => {
 
-
     if (!req.user)
         res.status(500).json({
             msg: 'Fallo en validacion del token'

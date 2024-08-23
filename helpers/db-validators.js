@@ -2,6 +2,7 @@ const { User } = require("../models/user");
 const { Certification } = require("../models/certification");
 const { Role } = require("../models/role");
 const { Reservation } = require("../models/reservation");
+const { JobApplication } = require("../models/jobApplication");
 
 
 // todo--------------------------------------------------------------------------------------
@@ -27,6 +28,7 @@ const existEmail = async (email = '') => {
 }
 
 
+
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    exist user   ---------------------------------------
 // todo--------------------------------------------------------------------------------------
@@ -38,7 +40,7 @@ const existUser = async (id = '') => {
 
 
 // todo--------------------------------------------------------------------------------------
-// todo------------------------------    exist certification   ---------------------------------------
+// todo------------------------------    exist certification   ------------------------------
 // todo--------------------------------------------------------------------------------------
 const existCertification = async (id = '') => {
     const certification = await Certification.findByPk(id);
@@ -48,12 +50,23 @@ const existCertification = async (id = '') => {
 
 
 // todo--------------------------------------------------------------------------------------
-// todo------------------------------    exist reservation   ---------------------------------------
+// todo------------------------------    exist reservation   --------------------------------
 // todo--------------------------------------------------------------------------------------
 const existReservation = async (id = '') => {
     const reservation = await Reservation.findByPk(id);
     if (!reservation)
         throw new Error(`No existe la reservacion con id ${id}`);
+}
+
+
+
+// todo--------------------------------------------------------------------------------------
+// todo------------------------------    exist jobApplication   -----------------------------
+// todo--------------------------------------------------------------------------------------
+const existJobApplication = async (id = '') => {
+    const jobApplication = await JobApplication.findByPk(id);
+    if (!jobApplication)
+        throw new Error(`No existe la solicitud de trabajo con id ${id}`);
 }
 
 
@@ -64,5 +77,6 @@ module.exports = {
     existEmail,
     existUser,
     existCertification,
-    existReservation
+    existReservation,
+    existJobApplication
 }

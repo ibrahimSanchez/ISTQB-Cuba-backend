@@ -3,47 +3,42 @@ const { Router } = require('express');
 
 const { validateFields, validateJWT, isAdminRole, hasRole } = require('../middlewares/index');
 
-const { existEmail, existUser, isRoleValid } = require('../helpers/index');
+const { existJobApplication, existUser } = require('../helpers/index');
 
 const {
-    usersGet,
-    usersPut,
-    usersPost,
-    usersDelete,
-    getUserById
+    jobApplicatiosnGet,
+    jobApplicationsPost,
+    jobApplicationsPut,
+    jobApplicationsDelete
 } = require('../controllers/index');
 
 
 
-const router = Router();
+
+const router =   Router();
 
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    get   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
-router.get('/', usersGet);
-
-
-
-// todo--------------------------------------------------------------------------------------
-// todo------------------------------    get by id   ----------------------------------------------
-// todo--------------------------------------------------------------------------------------
-router.get('/:id', [
-    check('id').custom(existUser),
+router.get('/',[
+    validateJWT,
+    isAdminRole,
     validateFields
-], getUserById);
+], jobApplicatiosnGet);
 
 
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    post   ---------------------------------------------
 // todo--------------------------------------------------------------------------------------
 router.post('/', [
-    check('name', 'El campo "name" es requerido').not().isEmpty(),
-    check('password', 'El campo "password" debe tener como minimo 8 caaracteres').isLength({ min: 8 }),
-    check('email', 'El campo "email" no es valido').isEmail(),
-    check('email').custom(existEmail),
-    check('role').custom(isRoleValid),
+    validateJWT,
+    check('userId', 'El campo "userId" es requerido').not().isEmpty(),
+    check('emailUser', 'El campo "emailUser" es requerido').not().isEmpty(),
+    check('nameUser', 'El campo "nameUser" es requerido').not().isEmpty(),
+    check('description', 'El campo "description" es requerido').not().isEmpty(),
+    check('userId').custom(existUser),
     validateFields
-], usersPost);
+], jobApplicationsPost);
 
 
 // todo--------------------------------------------------------------------------------------
@@ -52,11 +47,10 @@ router.post('/', [
 router.put('/:id', [
     validateJWT,
     isAdminRole,
-    hasRole('ADMIN_ROLE'),
-    check('id').custom(existUser),
-    check('role').custom(isRoleValid),
+    check('id').custom(existJobApplication),
+    check('approved', 'El campo "aprobada" es requerido').not().isEmpty(),
     validateFields
-], usersPut);
+], jobApplicationsPut);
 
 
 // todo--------------------------------------------------------------------------------------
@@ -66,14 +60,13 @@ router.delete('/:id', [
     validateJWT,
     isAdminRole,
     hasRole('ADMIN_ROLE'),
-    check('id').custom(existUser),
+    check('id').custom(existJobApplication),
     validateFields
-], usersDelete);
+], jobApplicationsDelete);
 
 
 
 module.exports = router;
 
 
-
-// http://localhost:8080/api/users
+// http://localhost:8080/api/jobApplications

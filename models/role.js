@@ -35,4 +35,14 @@ const Role = sequelize.define('role', {
 
 
 
+Role.prototype.toJSON = function () {
+    const values = { ...this.get() };
+    const id = values.id;
+    delete values.updatedAt;
+    delete values.createdAt;
+    delete values.id;
+    values.uid = id;
+    return values;
+};
+
 module.exports = { Role };

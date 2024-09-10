@@ -21,6 +21,26 @@ const isAdminRole = async (req, res, next) => {
 
 }
 
+const isProfesorRole = async (req, res, next) => {
+
+    if (!req.user)
+        res.status(500).json({
+            msg: 'Fallo en validacion del token'
+        });
+
+
+    const { role, name } = req.user;
+
+    if (role != 'PROFESOR_ROLE')
+        res.status(401).json({
+            msg: `${name} no es profesor`
+        });
+
+
+    next();
+
+}
+
 
 const hasRole = (...roles) => {
     return (req, res, next) => {
@@ -45,5 +65,6 @@ const hasRole = (...roles) => {
 
 module.exports = {
     isAdminRole,
-    hasRole
+    hasRole,
+    isProfesorRole
 }

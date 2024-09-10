@@ -1,7 +1,7 @@
 const { check } = require('express-validator');
 const { Router } = require('express');
 
-const { validateFields, validateJWT, isAdminRole, hasRole } = require('../middlewares/index');
+const { validateFields, validateJWT, isAdminRole, hasRole, validateArrayUsers } = require('../middlewares/index');
 
 const { existEmail, existUser, isRoleValid } = require('../helpers/index');
 
@@ -10,7 +10,8 @@ const {
     usersPut,
     usersPost,
     usersDelete,
-    getUserById
+    getUserById,
+    usersArrayDelete
 } = require('../controllers/index');
 
 
@@ -69,6 +70,18 @@ router.delete('/:id', [
     check('id').custom(existUser),
     validateFields
 ], usersDelete);
+
+ 
+// todo--------------------------------------------------------------------------------------
+// todo------------------------------    delete array   -------------------------------------
+// todo--------------------------------------------------------------------------------------
+router.delete('/', [
+    validateJWT,
+    isAdminRole,
+    validateArrayUsers,
+    hasRole('ADMIN_ROLE'),
+    validateFields
+], usersArrayDelete);
 
 
 

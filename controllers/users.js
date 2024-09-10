@@ -139,10 +139,54 @@ const usersDelete = async (req = request, res = response) => {
 }
 
 
+
+// todo--------------------------------------------------------------------------------------
+// todo------------------------------    delete array   -------------------------------------
+// todo--------------------------------------------------------------------------------------
+const usersArrayDelete = async (req = request, res = response) => {
+
+    const data = req.body.data;
+    const { user: userAuth } = req;
+
+    try {
+        const users = await User.findAll({
+            where: {
+                id: data,
+                state: true
+            }
+        });
+
+        users.forEach(async (user) => {
+
+            if (user.state) {
+                user.state = false;
+                await user.save();
+
+            } else
+                res.status(404).json({
+                    msg: 'El usuario no esta almacenado en la BD'
+                });
+        })
+
+        res.json({
+            msg: 'Usuarios eliminados correctamente',
+            users,
+            userAuth
+        });
+
+    } catch (error) {
+        console.log('error en el delete', error)
+    }
+}
+
+
+
+
 module.exports = {
     usersGet,
     getUserById,
     usersPost,
     usersPut,
-    usersDelete
+    usersDelete,
+    usersArrayDelete
 };

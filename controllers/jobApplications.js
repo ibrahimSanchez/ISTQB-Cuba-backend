@@ -1,5 +1,6 @@
 const { response, request } = require('express');
 const { JobApplication } = require('../models/jobApplication');
+const { Notification } = require('../models/notification');
 
 
 // todo--------------------------------------------------------------------------------------
@@ -72,7 +73,7 @@ const jobApplicationsPost = async (req = request, res = response) => {
         console.log('error en el post', error)
     }
 }
-
+ 
 
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    put   ----------------------------------------------
@@ -86,6 +87,16 @@ const jobApplicationsPut = async (req = request, res = response) => {
         const jobApplications = await JobApplication.findByPk(id);
         Object.assign(jobApplications, rest);
         await jobApplications.save();
+
+
+        // Create notification
+        const d = new Date();
+        const date = `${d.getDay() + 1}/${d.getMonth()}/${d.getFullYear()}`
+        const message = `Se ha aprobado la solicitud de trabajo`;
+        const theme = `Solicitud de trabajo`;
+        const notification = new Notification({ date, message, theme, userId: jobApplications.userId });
+        await notification.save();
+
 
         res.json({
             msg: 'Solicitud de trabajo modificada correctamete',
@@ -122,7 +133,7 @@ const jobApplicationsDelete = async (req = request, res = response) => {
             });
         } else
             res.status(404).json({
-                msg: 'El certificación no esta almacenada en la BD'
+                msg: 'La solicitud de trabajo no esta almacenada en la BD'
             });
 
     } catch (error) {
@@ -131,10 +142,53 @@ const jobApplicationsDelete = async (req = request, res = response) => {
 }
 
 
+// todo--------------------------------------------------------------------------------------
+// todo------------------------------    delete array   -------------------------------------
+// todo--------------------------------------------------------------------------------------
+const jobApplicationsArrayDelete = async (req = request, res = response) => {
+
+    const data = req.body.data;
+    const { user: userAuth } = req;
+
+    try {
+        const jobApplications = await JobApplication.findAll({
+            where: {
+                id: data,
+                state: true
+            }
+        });
+
+        jobApplications.forEach(async (jobApplication) => {
+
+            if (jobApplication.state) {
+                jobApplication.state = false;
+                await jobApplication.save();
+
+            } else
+                res.status(404).json({
+                    msg: 'Las solicitudes de trabajo no están almacenadas en la BD'
+                });
+        })
+
+        res.json({
+            msg: 'Solicitudes de trabajo eliminadas correctamente',
+            jobApplications,
+            userAuth
+        });
+
+    } catch (error) {
+        console.log('error en el delete', error)
+    }
+}
+
+
+
+
 module.exports = {
     jobApplicatiosnGet,
     getJobApplication,
     jobApplicationsPost,
     jobApplicationsPut,
-    jobApplicationsDelete
+    jobApplicationsDelete,
+    jobApplicationsArrayDelete
 };

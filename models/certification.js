@@ -1,4 +1,5 @@
 const { Sequelize, DataTypes } = require("sequelize");
+const { User } = require("./user");
 const sequelize = new Sequelize(`${process.env.CONNECTION_DB}`);
 
 
@@ -22,7 +23,10 @@ const Certification = sequelize.define("certification", {
 
     category: {
         type: DataTypes.STRING(100),
-        allowNull: false
+        allowNull: false,
+        validate: {
+            isIn: [['Base', 'Avanzado', 'Intermedio']]
+        }
     },
 
     state: {
@@ -35,6 +39,14 @@ const Certification = sequelize.define("certification", {
         defaultValue: 0
     }
 });
+
+ 
+
+// Relacion con otras tablas
+Certification.belongsTo(User, { foreignKey: 'userId' });
+
+
+
 
 // Crear la tabla
 // (async () => {

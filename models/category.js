@@ -2,13 +2,13 @@ const { Sequelize, DataTypes } = require("sequelize");
 const sequelize = new Sequelize(`${process.env.CONNECTION_DB}`);
 
 
-const Role = sequelize.define('role', {
+const Category = sequelize.define('category', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true
     },
-    role: {
+    category: {
         type: DataTypes.STRING
     }
 });
@@ -18,16 +18,16 @@ const Role = sequelize.define('role', {
 //     .then(() => {
 //         console.log('Modelo sincronizado correctamente');
 //         // Insertar los roles
-//         Role.bulkCreate([
-//             { role: 'ADMIN_ROLE' },
-//             { role: 'USER_ROLE' },
-//             { role: 'PROFESOR_ROLE' }
+//         Category.bulkCreate([
+//             { category: 'Base' },
+//             { category: 'Intermedio' },
+//             { category: 'Avanzado' }
 //         ])
 //             .then(() => {
-//                 console.log('Roles insertados con éxito');
+//                 console.log('Categorias insertados con éxito');
 //             })
 //             .catch((error) => {
-//                 console.error('Error al insertar roles:', error);
+//                 console.error('Error al insertar categorias:', error);
 //             });
 //     })
 //     .catch((error) => {
@@ -36,7 +36,7 @@ const Role = sequelize.define('role', {
 
 
 
-Role.prototype.toJSON = function () {
+Category.prototype.toJSON = function () {
     const values = { ...this.get() };
     const id = values.id;
     delete values.updatedAt;
@@ -46,4 +46,4 @@ Role.prototype.toJSON = function () {
     return values;
 };
 
-module.exports = { Role };
+module.exports = { Category };

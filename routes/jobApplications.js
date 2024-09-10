@@ -1,7 +1,13 @@
 const { check } = require('express-validator');
 const { Router } = require('express');
 
-const { validateFields, validateJWT, isAdminRole, hasRole } = require('../middlewares/index');
+const {
+    validateFields,
+    validateJWT,
+    isAdminRole,
+    hasRole,
+    validateArrayJobApplications
+} = require('../middlewares/index');
 
 const { existJobApplication, existUser } = require('../helpers/index');
 
@@ -9,18 +15,19 @@ const {
     jobApplicatiosnGet,
     jobApplicationsPost,
     jobApplicationsPut,
-    jobApplicationsDelete
+    jobApplicationsDelete,
+    jobApplicationsArrayDelete
 } = require('../controllers/index');
 
 
 
 
-const router =   Router();
+const router = Router();
 
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    get   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
-router.get('/',[
+router.get('/', [
     validateJWT,
     isAdminRole,
     validateFields
@@ -63,6 +70,20 @@ router.delete('/:id', [
     check('id').custom(existJobApplication),
     validateFields
 ], jobApplicationsDelete);
+
+
+
+// todo--------------------------------------------------------------------------------------
+// todo------------------------------    delete array   -------------------------------------
+// todo--------------------------------------------------------------------------------------
+router.delete('/', [
+    validateJWT,
+    isAdminRole,
+    validateArrayJobApplications,
+    hasRole('ADMIN_ROLE'),
+    validateFields
+], jobApplicationsArrayDelete);
+
 
 
 

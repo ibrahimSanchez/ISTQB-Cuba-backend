@@ -7,24 +7,47 @@ const { Certification } = require('../models/certification');
 // todo--------------------------------------------------------------------------------------
 const certificationsGet = async (req = request, res = response) => {
 
+    const userId = req.header('x-userId');
+ 
     const { limit = 10, start = 0 } = req.query;
-    const q = { where: { state: true } };
+    // const q = { where: { state: true } };
 
     try {
-        const [total, certifications] = await Promise.all([
-            Certification.count(q),
-            Certification.findAll({
-                limit: Number(limit) ? Number(limit) : 10,
-                offset: Number(start) ? Number(start) : 0,
-                order: ['id'],
-                where: { state: true }
-            })
-        ]);
+        if (!userId) {
+            const q = { where: { state: true } };
+            const [total, certifications] = await Promise.all([
+                Certification.count(q),
+                Certification.findAll({
+                    limit: Number(limit) ? Number(limit) : 10,
+                    offset: Number(start) ? Number(start) : 0,
+                    order: ['id'],
+                    where: { state: true }
+                })
+            ]);
 
-        res.json({
-            total,
-            certifications
-        });
+            res.json({
+                total,
+                certifications
+            });
+        }
+        else {
+            const q = { where: { state: true, userId: userId } };
+            const [total, certifications] = await Promise.all([
+                Certification.count(q),
+                Certification.findAll({
+                    limit: Number(limit) ? Number(limit) : 10,
+                    offset: Number(start) ? Number(start) : 0,
+                    order: ['id'],
+                    where: { state: true, userId: userId }
+                })
+            ]);
+
+            res.json({
+                total,
+                certifications
+            });
+        }
+
     } catch (error) {
         console.log('error en el get', error)
     }
@@ -54,13 +77,14 @@ const getCertificationById = async (req, res) => {
 }
 
 
+
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    post   ---------------------------------------------
 // todo--------------------------------------------------------------------------------------
 const certificationsPost = async (req = request, res = response) => {
 
-    const { name, description, category, prise } = req.body;
-    const certifications = new Certification({ name, description, category, prise });
+    const { name, description, category, prise, userId } = req.body;
+    const certifications = new Certification({ name, description, category, prise, userId });
 
     try {
         await certifications.save();
@@ -136,5 +160,5 @@ module.exports = {
     getCertificationById,
     certificationsPost,
     certificationsPut,
-    certificationsDelete
+    certificationsDelete,
 };

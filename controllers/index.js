@@ -3,6 +3,8 @@ const certificationController = require('./certifications');
 const reservationController = require('./reservations');
 const jobApplicationsController = require('./jobApplications');
 const roleController = require('./roles');
+const notificationsController = require('./notifications');
+const categoriesController = require('./categories');
 
 
 
@@ -11,5 +13,7 @@ module.exports = {
     ...certificationController,
     ...reservationController,
     ...jobApplicationsController,
-    ...roleController
+    ...roleController,
+    ...notificationsController,
+    ...categoriesController
 }

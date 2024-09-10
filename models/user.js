@@ -33,7 +33,7 @@ const User = sequelize.define("user", {
         type: DataTypes.STRING(100),
         allowNull: false,
         validate: {
-            isIn: [['ADMIN_ROLE', 'USER_ROLE']]
+            isIn: [['ADMIN_ROLE', 'USER_ROLE', 'PROFESOR_ROLE']]
         }
     },
 

@@ -1,16 +1,16 @@
 const { check } = require('express-validator');
 const { Router } = require('express');
 
-const { validateFields, validateJWT, validateArrayReservations, hasRole, isProfesorRole } = require('../middlewares/index');
+const { validateFields, hasRole, isAdminRole, validateJWT } = require('../middlewares/index');
 
-const { existCertification, existUser, existReservation } = require('../helpers/index');
+const { existNotification, existUser } = require('../helpers/index');
 
 const {
-    reservationsGet,
-    reservationsPost,
-    reservationsPut,
-    reservationsDelete,
-    reservationsArrayDelete
+    notificationsGet,
+    getNotificationByUserId,
+    notificationsPost,
+    notificationsPut,
+    notificationsDelete
 } = require('../controllers/index');
 
 
@@ -20,36 +20,37 @@ const router = Router();
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    get   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
-router.get('/', [
-    validateJWT,
-    isProfesorRole,
+router.get('/', notificationsGet);
+
+
+// todo--------------------------------------------------------------------------------------
+// todo------------------------------    get by user id   -----------------------------------
+// todo--------------------------------------------------------------------------------------
+router.get('/:id', [
+    check('id').custom(existUser),
     validateFields
-], reservationsGet);
+], getNotificationByUserId);
 
 
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    post   ---------------------------------------------
 // todo--------------------------------------------------------------------------------------
 router.post('/', [
-    validateJWT,
     check('userId', 'El campo "userId" es requerido').not().isEmpty(),
-    check('certificationId', 'El campo "certificationId" es requerido').not().isEmpty(),
-    check('userId').custom(existUser),
-    check('certificationId').custom(existCertification),
+    check('date', 'El campo "date" es requerido').not().isEmpty(),
+    check('message', 'El campo "message" es requerido').not().isEmpty(),
+    check('theme', 'El campo "theme" es requerido').not().isEmpty(),
     validateFields
-], reservationsPost);
+], notificationsPost);
 
 
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    put   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
 router.put('/:id', [
-    validateJWT,
-    isProfesorRole,
-    check('id').custom(existReservation),
-    check('approved', 'El campo "aprobada" es requerido').not().isEmpty(),
+    check('id').custom(existNotification),
     validateFields
-], reservationsPut);
+], notificationsPut);
 
 
 // todo--------------------------------------------------------------------------------------
@@ -57,23 +58,11 @@ router.put('/:id', [
 // todo--------------------------------------------------------------------------------------
 router.delete('/:id', [
     validateJWT,
-    isProfesorRole,
-    hasRole('PROFESOR_ROLE'),
-    check('id').custom(existReservation),
+    // isAdminRole,
+    // hasRole('ADMIN_ROLE'),
+    check('id').custom(existNotification),
     validateFields
-], reservationsDelete);
-
-
-// todo--------------------------------------------------------------------------------------
-// todo------------------------------    delete array   -------------------------------------
-// todo--------------------------------------------------------------------------------------
-router.delete('/', [
-    validateJWT,
-    isProfesorRole,
-    validateArrayReservations,
-    hasRole('PROFESOR_ROLE'),
-    validateFields
-], reservationsArrayDelete);
+], notificationsDelete);
 
 
 
@@ -81,4 +70,4 @@ module.exports = router;
 
 
 
-// http://localhost:8080/api/reservations
+// http://localhost:8080/api/notifications

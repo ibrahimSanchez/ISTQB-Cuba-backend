@@ -1,7 +1,7 @@
 const { check } = require('express-validator');
 const { Router } = require('express');
 
-const { validateFields } = require('../middlewares/index');
+const { validateFields, hasRole, validateJWT, isProfesorRole } = require('../middlewares/index');
 
 const { existCertification } = require('../helpers/index');
 
@@ -32,13 +32,18 @@ router.get('/:id', [
 ], getCertificationById);
 
 
+
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    post   ---------------------------------------------
 // todo--------------------------------------------------------------------------------------
 router.post('/', [
+    validateJWT,
+    isProfesorRole,
+    hasRole('PROFESOR_ROLE'),
     check('name', 'El campo "name" es requerido').not().isEmpty(),
     check('description', 'El campo "description" es requerido').not().isEmpty(),
     check('category', 'El campo "category" es requerido').not().isEmpty(),
+    check('userId', 'El campo "userId" es requerido').not().isEmpty(),
     validateFields
 ], certificationsPost);
 
@@ -47,6 +52,9 @@ router.post('/', [
 // todo------------------------------    put   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
 router.put('/:id', [
+    validateJWT,
+    isProfesorRole,
+    hasRole('PROFESOR_ROLE'),
     check('id').custom(existCertification),
     validateFields
 ], certificationsPut);
@@ -56,9 +64,9 @@ router.put('/:id', [
 // todo------------------------------    delete   -------------------------------------------
 // todo--------------------------------------------------------------------------------------
 router.delete('/:id', [
-    // validateJWT,
-    // isAdminRole,
-    // hasRole('ADMIN_ROLE'),
+    validateJWT,
+    isProfesorRole,
+    hasRole('PROFESOR_ROLE'),
     check('id').custom(existCertification),
     validateFields
 ], certificationsDelete);

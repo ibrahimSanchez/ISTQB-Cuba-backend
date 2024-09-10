@@ -1,5 +1,6 @@
 const { response, request } = require('express');
 const { Reservation } = require('../models/reservation');
+const { Notification } = require('../models/notification');
 
 
 // todo--------------------------------------------------------------------------------------
@@ -60,15 +61,26 @@ const reservationsPut = async (req = request, res = response) => {
     const { id } = req.params;
     const { id: i, userId, curseId, ...rest } = req.body;
 
+
     try {
         const reservation = await Reservation.findByPk(id);
         Object.assign(reservation, rest);
         await reservation.save();
 
+        // Create notification
+        const d = new Date();
+        const date = `${d.getDay() + 1}/${d.getMonth()}/${d.getFullYear()}`
+        const message = `Se ha aprobado la reservación`;
+        const theme = `Reservación`;
+        const notification = new Notification({ date, message, theme, userId: reservation.userId });
+        await notification.save();
+
+
         res.json({
             msg: 'Reservacion modificada correctamete',
             reservation
         });
+
 
     } catch (error) {
         console.log('error en el put', error)
@@ -109,9 +121,54 @@ const reservationsDelete = async (req = request, res = response) => {
 }
 
 
+
+// todo--------------------------------------------------------------------------------------
+// todo------------------------------    delete array   -------------------------------------
+// todo--------------------------------------------------------------------------------------
+const reservationsArrayDelete = async (req = request, res = response) => {
+
+    const data = req.body.data;
+    const { user: userAuth } = req;
+
+    try {
+        const reservations = await Reservation.findAll({
+            where: {
+                id: data,
+                state: true
+            }
+        });
+
+        reservations.forEach(async (reservation) => {
+
+            if (reservation.state) {
+                reservation.state = false;
+                await reservation.save();
+
+            } else
+                res.status(404).json({
+                    msg: 'Las reservaciones no están almacenadas en la BD'
+                });
+        })
+
+        res.json({
+            msg: 'Reservaciones eliminadas correctamente',
+            reservations,
+            userAuth
+        });
+
+    } catch (error) {
+        console.log('error en el delete', error)
+    }
+}
+
+
+
+
+
 module.exports = {
     reservationsGet,
     reservationsPost,
     reservationsPut,
-    reservationsDelete
+    reservationsDelete,
+    reservationsArrayDelete
 };

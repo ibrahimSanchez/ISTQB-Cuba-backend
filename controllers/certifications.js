@@ -8,9 +8,6 @@ const { Certification } = require('../models/certification');
 const certificationsGet = async (req = request, res = response) => {
 
     const userId = req.header('x-userId');
- 
-    const { limit = 10, start = 0 } = req.query;
-    // const q = { where: { state: true } };
 
     try {
         if (!userId) {
@@ -18,8 +15,6 @@ const certificationsGet = async (req = request, res = response) => {
             const [total, certifications] = await Promise.all([
                 Certification.count(q),
                 Certification.findAll({
-                    limit: Number(limit) ? Number(limit) : 10,
-                    offset: Number(start) ? Number(start) : 0,
                     order: ['id'],
                     where: { state: true }
                 })
@@ -35,8 +30,6 @@ const certificationsGet = async (req = request, res = response) => {
             const [total, certifications] = await Promise.all([
                 Certification.count(q),
                 Certification.findAll({
-                    limit: Number(limit) ? Number(limit) : 10,
-                    offset: Number(start) ? Number(start) : 0,
                     order: ['id'],
                     where: { state: true, userId: userId }
                 })

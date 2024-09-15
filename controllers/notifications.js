@@ -7,15 +7,12 @@ const { Notification } = require('../models/notification');
 // todo--------------------------------------------------------------------------------------
 const notificationsGet = async (req = request, res = response) => {
 
-    const { limit = 10, start = 0 } = req.query;
     const q = { where: { state: true } };
 
     try {
         const [total, notifications] = await Promise.all([
             Notification.count(q),
             Notification.findAll({
-                limit: Number(limit) ? Number(limit) : 10,
-                offset: Number(start) ? Number(start) : 0,
                 order: ['id'],
                 where: { state: true }
             })

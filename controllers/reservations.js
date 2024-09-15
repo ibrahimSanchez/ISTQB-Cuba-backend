@@ -8,15 +8,12 @@ const { Notification } = require('../models/notification');
 // todo--------------------------------------------------------------------------------------
 const reservationsGet = async (req = request, res = response) => {
 
-    const { limit = 10, start = 0 } = req.query;
     const q = { where: { state: true } };
 
     try {
         const [total, reservations] = await Promise.all([
             Reservation.count(q),
             Reservation.findAll({
-                limit: Number(limit) ? Number(limit) : 10,
-                offset: Number(start) ? Number(start) : 0,
                 order: ['id'],
                 where: { state: true }
             })
@@ -69,12 +66,11 @@ const reservationsPut = async (req = request, res = response) => {
 
         // Create notification
         const d = new Date();
-        const date = `${d.getDay() + 1}/${d.getMonth()}/${d.getFullYear()}`
+        const date = `${d.getDate() + 1}/${d.getMonth() + 1}/${d.getFullYear()}`
         const message = `Se ha aprobado la reservación`;
         const theme = `Reservación`;
         const notification = new Notification({ date, message, theme, userId: reservation.userId });
         await notification.save();
-
 
         res.json({
             msg: 'Reservacion modificada correctamete',

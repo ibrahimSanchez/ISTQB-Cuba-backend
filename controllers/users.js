@@ -8,15 +8,12 @@ const { User } = require('../models/user');
 // todo--------------------------------------------------------------------------------------
 const usersGet = async (req = request, res = response) => {
 
-    const { limit = 10, start = 0 } = req.query;
     const q = { where: { state: true } };
 
     try {
         const [total, users] = await Promise.all([
             User.count(q),
             User.findAll({
-                limit: Number(limit) ? Number(limit) : 10,
-                offset: Number(start) ? Number(start) : 0,
                 order: ['id'],
                 where: { state: true }
             })

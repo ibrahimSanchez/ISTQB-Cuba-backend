@@ -16,7 +16,8 @@ const {
     jobApplicationsPost,
     jobApplicationsPut,
     jobApplicationsDelete,
-    jobApplicationsArrayDelete
+    jobApplicationsArrayDelete,
+    getJobApplicationById
 } = require('../controllers/index');
 
 
@@ -32,6 +33,18 @@ router.get('/', [
     isAdminRole,
     validateFields
 ], jobApplicatiosnGet);
+
+
+
+// todo--------------------------------------------------------------------------------------
+// todo------------------------------    get by id   ----------------------------------------------
+// todo--------------------------------------------------------------------------------------
+router.get('/:id', [
+    validateJWT,
+    isAdminRole,
+    check('id').custom(existJobApplication),
+    validateFields
+], getJobApplicationById);
 
 
 // todo--------------------------------------------------------------------------------------

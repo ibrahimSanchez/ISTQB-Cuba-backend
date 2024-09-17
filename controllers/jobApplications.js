@@ -33,15 +33,15 @@ const jobApplicatiosnGet = async (req = request, res = response) => {
 // todo--------------------------------------------------------------------------------------
 // todo-------------------------------    get by id   ---------------------------------------
 // todo--------------------------------------------------------------------------------------
-const getJobApplication = async (req, res) => {
+const getJobApplicationById = async (req, res) => {
 
     const { id } = req.params;
 
     try {
-        const jobApplications = await JobApplication.findByPk(id)
+        const jobApplication = await JobApplication.findByPk(id)
 
         res.json({
-            jobApplications
+            jobApplication
         });
     } catch (error) {
         console.log(error);
@@ -88,7 +88,7 @@ const jobApplicationsPut = async (req = request, res = response) => {
 
         // Create notification
         const d = new Date();
-        const date = `${d.getDay() + 1}/${d.getMonth()}/${d.getFullYear()}`
+        const date = `${d.getDate() + 1}/${d.getMonth() + 1}/${d.getFullYear()}`
         const message = `Se ha aprobado la solicitud de trabajo`;
         const theme = `Solicitud de trabajo`;
         const notification = new Notification({ date, message, theme, userId: jobApplications.userId });
@@ -105,7 +105,7 @@ const jobApplicationsPut = async (req = request, res = response) => {
     }
 }
 
-
+ 
 
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    delete   -------------------------------------------
@@ -183,9 +183,9 @@ const jobApplicationsArrayDelete = async (req = request, res = response) => {
 
 module.exports = {
     jobApplicatiosnGet,
-    getJobApplication,
     jobApplicationsPost,
     jobApplicationsPut,
     jobApplicationsDelete,
-    jobApplicationsArrayDelete
+    jobApplicationsArrayDelete,
+    getJobApplicationById
 };

@@ -16,7 +16,11 @@ class Server {
             roles: '/api/roles',
             categories: '/api/categories',
             jobApplications: '/api/jobApplications',
-            notifications: '/api/notifications'
+            notifications: '/api/notifications',
+
+            provinces: '/api/provinces',
+            municipalities: '/api/municipalities'
+
         }
 
         this.connectDB();
@@ -58,6 +62,9 @@ class Server {
         this.app.use(this.paths.jobApplications, require('../routes/jobApplications'));
         this.app.use(this.paths.notifications, require('../routes/notifications'));
         this.app.use(this.paths.categories, require('../routes/categories'));
+
+        this.app.use(this.paths.provinces, require('../routes/provinces'));
+        this.app.use(this.paths.municipalities, require('../routes/municipalities'));
     }
 
 

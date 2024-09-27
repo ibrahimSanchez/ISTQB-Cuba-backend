@@ -5,6 +5,8 @@ const jobApplicationsController = require('./jobApplications');
 const roleController = require('./roles');
 const notificationsController = require('./notifications');
 const categoriesController = require('./categories');
+const provincesController = require('./provinces');
+const municipalitiesController = require('./municipalities');
 
 
 
@@ -15,5 +17,7 @@ module.exports = {
     ...jobApplicationsController,
     ...roleController,
     ...notificationsController,
-    ...categoriesController
+    ...categoriesController,
+    ...provincesController,
+    ...municipalitiesController
 }

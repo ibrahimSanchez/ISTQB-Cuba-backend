@@ -1,20 +1,22 @@
 const { Router } = require('express');
-const {
-    rolesGet
-} = require('../controllers/index');
-
+const { provincesGet } = require('../controllers');
 
 
 const router = Router();
 
+
+
 // todo--------------------------------------------------------------------------------------
 // todo------------------------------    get   ----------------------------------------------
 // todo--------------------------------------------------------------------------------------
-router.get('/', rolesGet);
+router.get('/', provincesGet);
+
 
 
 module.exports = router;
 
 
 
-// http://localhost:8080/api/roles
+
+
+// http://localhost:8080/api/provinces

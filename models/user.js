@@ -10,11 +10,16 @@ const User = sequelize.define("user", {
         primaryKey: true
     },
 
+    ci: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+
     name: {
         type: DataTypes.STRING(100),
         allowNull: false
     },
- 
+
     email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -26,7 +31,7 @@ const User = sequelize.define("user", {
     password: {
         type: DataTypes.STRING(100),
         allowNull: false,
-      
+
     },
 
     role: {
@@ -42,6 +47,27 @@ const User = sequelize.define("user", {
         defaultValue: true
     }
 });
+
+
+
+
+
+
+// Relacion con otras tablas
+// Reservation.belongsTo(User, { foreignKey: 'userId' });
+
+
+
+// province: {
+//     type: DataTypes.STRING(100),
+//     allowNull: false
+// },
+
+// minicipality: {
+//     type: DataTypes.STRING(100),
+//     allowNull: false
+// },
+
 
 
 // Crear la tabla

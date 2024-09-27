@@ -3,7 +3,7 @@ const { Router } = require('express');
 
 const { validateFields, validateJWT, isAdminRole, hasRole, validateArrayUsers } = require('../middlewares/index');
 
-const { existEmail, existUser, isRoleValid } = require('../helpers/index');
+const { existEmail, existUser, isRoleValid, isCiValid } = require('../helpers/index');
 
 const {
     usersGet,
@@ -39,9 +39,13 @@ router.get('/:id', [
 // todo--------------------------------------------------------------------------------------
 router.post('/', [
     check('name', 'El campo "name" es requerido').not().isEmpty(),
+    check('ci', 'El campo "ci" es requerido').not().isEmpty(),
+    check('provinceId', 'El campo "provinceId" es requerido').not().isEmpty(),
+    check('municipalityId', 'El campo "municipalityId" es requerido').not().isEmpty(),
     check('password', 'El campo "password" debe tener como minimo 8 caaracteres').isLength({ min: 8 }),
     check('email', 'El campo "email" no es valido').isEmail(),
     check('email').custom(existEmail),
+    check('ci').custom(isCiValid),
     check('role').custom(isRoleValid),
     validateFields
 ], usersPost);

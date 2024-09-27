@@ -83,6 +83,43 @@ const existNotification = async (id = '') => {
 
 
 
+
+
+
+
+
+// todo--------------------------------------------------------------------------------------
+// todo------------------------------    exist ci   -----------------------------------------
+// todo--------------------------------------------------------------------------------------
+// const existCi = async (ci = '') => {
+//     const exist = await User.findAll({ where: { ci } });
+
+//     if (exist.length > 0)
+//         throw new Error(`El email: ${ci} ya esta registrado`)
+// }
+
+
+
+
+// todo--------------------------------------------------------------------------------------
+// todo------------------------------    ci valid   -----------------------------------------
+// todo--------------------------------------------------------------------------------------
+const isCiValid = async (ci = '') => {
+
+    const isValid = (
+        (parseInt(ci.slice(0, 2)) >= 0 && parseInt(ci.slice(0, 2)) <= 99) &&
+        (parseInt(ci.slice(2, 4)) >= 0 && parseInt(ci.slice(2, 4)) <= 12) &&
+        (parseInt(ci.slice(4, 6)) > 0 && parseInt(ci.slice(4, 6)) <= 31)
+    );
+
+    if (!isValid)
+        throw new Error(`El email: ${email} ya esta registrado`)
+}
+
+
+
+
+
 module.exports = {
     isRoleValid,
     existEmail,
@@ -90,5 +127,6 @@ module.exports = {
     existCertification,
     existReservation,
     existJobApplication,
-    existNotification
+    existNotification,
+    isCiValid
 }

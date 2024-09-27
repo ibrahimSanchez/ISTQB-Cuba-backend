@@ -1,4 +1,6 @@
 const { Sequelize, DataTypes } = require("sequelize");
+const { Province } = require("./province");
+const { Municipality } = require("./municipality");
 const sequelize = new Sequelize(`${process.env.CONNECTION_DB}`);
 
 
@@ -11,8 +13,9 @@ const User = sequelize.define("user", {
     },
 
     ci: {
-        type: DataTypes.INTEGER,
-        allowNull: false
+        type: DataTypes.STRING(11),
+        allowNull: false,
+        unique: true,
     },
 
     name: {
@@ -49,24 +52,9 @@ const User = sequelize.define("user", {
 });
 
 
-
-
-
-
 // Relacion con otras tablas
-// Reservation.belongsTo(User, { foreignKey: 'userId' });
-
-
-
-// province: {
-//     type: DataTypes.STRING(100),
-//     allowNull: false
-// },
-
-// minicipality: {
-//     type: DataTypes.STRING(100),
-//     allowNull: false
-// },
+User.belongsTo(Province, { foreignKey: 'provinceId' });
+User.belongsTo(Municipality, { foreignKey: 'municipalityId' });
 
 
 

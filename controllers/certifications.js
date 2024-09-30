@@ -62,7 +62,7 @@ const getCertificationById = async (req, res) => {
             certifications
         });
     } catch (error) {
-        console.log(error);
+        // console.log(error);
         res.status(400).json({
             msg: 'No se pudo optener la certificación'
         });

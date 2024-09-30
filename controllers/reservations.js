@@ -1,6 +1,7 @@
 const { response, request } = require('express');
 const { Reservation } = require('../models/reservation');
 const { Notification } = require('../models/notification');
+const { User_certification } = require('../models/user_certification');
 
 
 // todo--------------------------------------------------------------------------------------
@@ -56,7 +57,7 @@ const reservationsPost = async (req = request, res = response) => {
 const reservationsPut = async (req = request, res = response) => {
 
     const { id } = req.params;
-    const { id: i, userId, curseId, ...rest } = req.body;
+    const { ...rest } = req.body;
 
 
     try {
@@ -72,6 +73,11 @@ const reservationsPut = async (req = request, res = response) => {
         const notification = new Notification({ date, message, theme, userId: reservation.userId });
         await notification.save();
 
+        // Create history certification
+        const user_certificatio = new User_certification({ userId: reservation.userId, certificationId: reservation.certificationId });
+        await user_certificatio.save();
+
+        
         res.json({
             msg: 'Reservacion modificada correctamete',
             reservation

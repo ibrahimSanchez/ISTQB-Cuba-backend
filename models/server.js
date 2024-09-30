@@ -19,7 +19,10 @@ class Server {
             notifications: '/api/notifications',
 
             provinces: '/api/provinces',
-            municipalities: '/api/municipalities'
+            municipalities: '/api/municipalities',
+            user_certificatios: '/api/user_certifications',
+            search: '/api/search',
+
 
         }
 
@@ -65,6 +68,8 @@ class Server {
 
         this.app.use(this.paths.provinces, require('../routes/provinces'));
         this.app.use(this.paths.municipalities, require('../routes/municipalities'));
+        this.app.use(this.paths.user_certificatios, require('../routes/user_certifications'));
+        this.app.use(this.paths.search, require('../routes/search'));
     }
 
 

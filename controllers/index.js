@@ -7,7 +7,8 @@ const notificationsController = require('./notifications');
 const categoriesController = require('./categories');
 const provincesController = require('./provinces');
 const municipalitiesController = require('./municipalities');
-
+const user_certificationsController = require('./user_certifications');
+const searchController = require('./search');
 
 
 module.exports = {
@@ -19,5 +20,7 @@ module.exports = {
     ...notificationsController,
     ...categoriesController,
     ...provincesController,
-    ...municipalitiesController
+    ...municipalitiesController,
+    ...user_certificationsController,
+    ...searchController
 }

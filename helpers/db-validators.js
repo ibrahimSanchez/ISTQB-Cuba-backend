@@ -4,6 +4,7 @@ const { Role } = require("../models/role");
 const { Reservation } = require("../models/reservation");
 const { JobApplication } = require("../models/jobApplication");
 const { Notification } = require("../models/notification");
+const { User_certification } = require("../models/user_certification");
 
 
 // todo--------------------------------------------------------------------------------------
@@ -83,6 +84,16 @@ const existNotification = async (id = '') => {
 
 
 
+// todo--------------------------------------------------------------------------------------
+// todo------------------------------    exist user_certification   -------------------------
+// todo--------------------------------------------------------------------------------------
+const existUser_certification = async (id = '') => {
+    const user_certification = await User_certification.findByPk(id);
+    if (!user_certification)
+        throw new Error(`No existe la notificación con id ${id}`);
+}
+
+
 
 
 
@@ -128,5 +139,6 @@ module.exports = {
     existReservation,
     existJobApplication,
     existNotification,
-    isCiValid
+    existUser_certification,
+    isCiValid,
 }

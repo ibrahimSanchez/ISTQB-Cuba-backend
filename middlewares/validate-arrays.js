@@ -2,6 +2,7 @@
 const { User } = require('../models/user');
 const { Reservation } = require('../models/reservation');
 const { JobApplication } = require('../models/jobApplication');
+const { User_certification } = require('../models/user_certification');
 
 
 
@@ -73,8 +74,37 @@ const validateArrayJobApplications = async (req, res, next) => {
 
 
 
+
+
+// todo--------------------------------------------------------------------------------------
+// todo------------------------------    user_certification   -------------------------------
+// todo--------------------------------------------------------------------------------------
+const validateArrayUser_certification = async (req, res, next) => {
+    const data = req.body.data;
+    // console.log(data)
+    const jobApplications = await User_certification.findAll({
+        where: {
+            id: data,
+            state: true
+        }
+    });
+
+    if (jobApplications.length != data.length) return res.status(401).json({
+        msg: `Los id no son válidos`
+    });
+
+    next();
+}
+
+
+
+
+
+
+
 module.exports = {
     validateArrayUsers,
     validateArrayReservations,
-    validateArrayJobApplications
+    validateArrayJobApplications,
+    validateArrayUser_certification
 }
